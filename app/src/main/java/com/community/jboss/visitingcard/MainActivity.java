@@ -1,20 +1,18 @@
 package com.community.jboss.visitingcard;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,7 +22,7 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button btn;
+    Button btn;
     private ImageView imageview;
     private static final String IMAGE_DIRECTORY = "/images";
     private int GALLERY = 1, CAMERA = 2;
@@ -34,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn = (Button) findViewById(R.id.btn);
-        imageview = (ImageView) findViewById(R.id.iv);
+        btn = findViewById(R.id.btn);
+        imageview = findViewById(R.id.iv);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, CAMERA);
     }
 
@@ -85,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
         if (requestCode == GALLERY) {
@@ -93,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentURI = data.getData();
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    String path = saveImage(bitmap);
                     imageview.setImageBitmap(bitmap);
 
                 } catch (IOException e) {
